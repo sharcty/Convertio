@@ -22,11 +22,11 @@ export class AppComponent {
   }
 
   getCurrency(){
-    this.currencyService.getCurrency("EUR").subscribe((result: ExchangeRateData) => {
+    /*this.currencyService.getCurrency("EUR").subscribe((result: ExchangeRateData) => {
       this.eur = result.conversion_rates ? result.conversion_rates["UAH"] : 0;
     });
     this.currencyService.getCurrency("USD").subscribe((result: ExchangeRateData) => {
       this.usd = result.conversion_rates ? result.conversion_rates["UAH"] : 0;
-    });
+    });*/
   }
 }

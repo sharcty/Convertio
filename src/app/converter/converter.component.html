@@ -1,10 +1,11 @@
 <form [formGroup]="currencyForm" class="max-w-md mx-auto mb-4 sm:mb-0 bg-white p-6 rounded-md shadow-md sm:mr-4">
     <div class="mb-4">
       <label for="fromCurrency" class="block text-sm font-semibold mb-2">From Currency</label>
+      <div class="currency-flag currency-flag-{{ this.currencyForm.value.fromCurrency.toLowerCase() }}"></div>
       <select formControlName="fromCurrency" name="fromCurrency" id="fromCurrency" class="input-style" (input)="setCurrencyType($event)">
-        <option value="UAH">UAH</option>
-        <option value="EUR" selected>EUR</option>
-        <option value="USD">USD</option>
+        <option *ngFor="let code of supportedCodes" [value]="code[0]">
+            {{ code[0] }} - {{ code[1] }}
+          </option>
       </select>
     </div>
 
@@ -21,10 +22,11 @@
 
     <div class="mb-4">
       <label for="toCurrency" class="block text-sm font-semibold mb-2">To Currency</label>
+      <div class="currency-flag currency-flag-{{ this.currencyForm.value.toCurrency.toLowerCase() }}"></div>
       <select name="toCurrency" formControlName="toCurrency" id="toCurrency" class="input-style" (input)="setCurrencyType($event)">
-        <option value="UAH">UAH</option>
-        <option value="EUR" selected>EUR</option>
-        <option value="USD">USD</option>
+        <option *ngFor="let code of supportedCodes" [value]="code[0]">
+            {{ code[0] }} - {{ code[1] }}
+          </option>
       </select>
     </div>
 

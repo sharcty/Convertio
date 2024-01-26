@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CurrencyService } from '../services/currency.service';
+import { SupportedCurrency } from '../interfaces/SupportedCurrencyData';
 
 @Component({
   selector: 'app-converter',
@@ -15,13 +16,26 @@ export class ConverterComponent {
     toCurrency: new FormControl('USD'),
     amountTo: new FormControl(0, [Validators.required, Validators.min(0)]),
   });
+  supportedCodes: any;
 
   constructor(currencyService: CurrencyService, private cdr: ChangeDetectorRef){
     this.currencyService = currencyService;
+    this.currencyService.getCurrenciesList().subscribe(
+      (response: SupportedCurrency) => {
+        if (response.result === 'success') {
+          this.supportedCodes = response.supported_codes;
+        } else {
+          console.error('Failed to fetch supported codes.');
+        }
+      },
+      error => {
+        console.error('Error fetching supported codes:', error);
+      }
+    );
   }
 
   convertCurrency() {
-    const { fromCurrency, toCurrency, amountFrom } = this.currencyForm.value;
+   /*const { fromCurrency, toCurrency, amountFrom } = this.currencyForm.value;
 
     this.currencyService.convertCurrency(fromCurrency, toCurrency, amountFrom).subscribe(
       result => {
@@ -35,7 +49,7 @@ export class ConverterComponent {
       }
     );
 
-    this.cdr.detectChanges();
+    this.cdr.detectChanges();*/
   }
 
   setCurrencyType(event: any) {
