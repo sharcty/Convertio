@@ -20,44 +20,35 @@ export class ConverterComponent {
     this.currencyService = currencyService;
   }
 
-  convertCurrency(event?: any){
-    if(event && event.target.id === "amountTo"){
-      this.currencyService.convertCurrency(this.currencyForm.value.toCurrency, this.currencyForm.value.fromCurrency, event.target.value).subscribe(
-        result => {
-          let bb = result.conversion_result? result.conversion_result : 0;
-          this.currencyForm.get('amountFrom')?.patchValue(bb, {onlySelf: true, emitEvent: false});
-          this.currencyForm.get('amountTo')?.patchValue(event.target.value);
+  convertCurrency() {
+    const { fromCurrency, toCurrency, amountFrom } = this.currencyForm.value;
+
+    this.currencyService.convertCurrency(fromCurrency, toCurrency, amountFrom).subscribe(
+      result => {
+        const convertedValue = result.conversion_result || 0;
+
+        if (amountFrom !== this.currencyForm.value.amountFrom) {
+          this.currencyForm.get('amountFrom')?.patchValue(convertedValue, { onlySelf: true, emitEvent: false });
+        } else {
+          this.currencyForm.get('amountTo')?.patchValue(convertedValue, { onlySelf: true, emitEvent: false });
         }
-      );
-    }else if(event && event.target.id === "amountFrom"){
-      this.currencyService.convertCurrency(this.currencyForm.value.fromCurrency, this.currencyForm.value.toCurrency, event.target.value).subscribe(
-        result => {
-          let val = result.conversion_result? result.conversion_result : 0;
-          this.currencyForm.get('amountFrom')?.patchValue(event.target.value);
-          this.currencyForm.get('amountTo')?.patchValue(val, {onlySelf: true, emitEvent: false });
-        }
-      );
-    }
-    else{
-      this.currencyService.convertCurrency(this.currencyForm.value.fromCurrency, this.currencyForm.value.toCurrency, this.currencyForm.value.amountFrom).subscribe(
-        result => {
-          let val = result.conversion_result? result.conversion_result : 0;
-          this.currencyForm.get('amountTo')?.patchValue(val, {onlySelf: true, emitEvent: false });
-        }
-      );
-    }
+      }
+    );
+
     this.cdr.detectChanges();
   }
 
   setCurrencyType(event: any) {
     this.currencyForm.get(event.target.id)?.patchValue(event.target.value);
-    this.convertCurrency(event);
+    this.convertCurrency();
   }
 
   swapCurrency() {
-    let currencyFrom = this.currencyForm.value.fromCurrency;
-    this.currencyForm.value.fromCurrency = this.currencyForm.value.toCurrency;
-    this.currencyForm.value.toCurrency = currencyFrom; 
-    this.convertCurrency(null);
+    const { fromCurrency, toCurrency } = this.currencyForm.value;
+    this.currencyForm.patchValue({
+      fromCurrency: toCurrency,
+      toCurrency: fromCurrency
+    });
+    this.convertCurrency();
   }
 }

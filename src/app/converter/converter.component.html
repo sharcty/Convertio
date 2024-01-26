@@ -10,7 +10,7 @@
 
     <div class="mb-4">
       <label for="amountFrom" class="block text-sm font-semibold mb-2">Amount</label>
-      <input type="number" formControlName="amountFrom" min="0" value="0" id="amountFrom" class="input-style" (input)="convertCurrency($event)" required>
+      <input type="number" formControlName="amountFrom" min="0" value="0" id="amountFrom" class="input-style" (input)="convertCurrency()" required>
     </div>
 
     <button (click)="swapCurrency()">
@@ -30,7 +30,7 @@
 
     <div class="mb-4">
       <label for="amountTo" class="block text-sm font-semibold mb-2">Amount</label>
-      <input type="number" formControlName="amountTo" min="0" value="0" id="amountTo" class="input-style" (input)="convertCurrency($event)" required>
+      <input type="number" formControlName="amountTo" min="0" value="0" id="amountTo" class="input-style" (input)="convertCurrency()" required>
     </div>
 
   </form>
