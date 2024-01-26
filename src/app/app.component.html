@@ -1,4 +1,4 @@
-<header class="flex justify-between items-center font-mono p-3.5">
+<header class="flex justify-between items-center font-mono p-3.5 bg-gray-800 text-white">
   <div class="currencies flex text-lg space-x-2">
     <h2>{{ eur }} EUR | {{ usd }} USD</h2>
   </div>
@@ -10,13 +10,13 @@
   </button>
 </header>
 
-<div class="flex flex-col md:flex-row items-center p-4">
+<div class="flex flex-col md:flex-row items-center p-4 flex-grow">
   <app-converter></app-converter>
   <div class="max-w-full md:max-w-md lg:max-w-lg mx-auto md:w-1/3 mx-auto mt-4 md:mt-0">
     <img src="../assets/Currency-pana.png" alt="Currency illustration" class="w-full">
   </div>
 </div>
 
-<footer class="text-center mt-4">
+<footer class="text-center mt-4 bg-gray-800 text-white p-4">
   <a href="https://storyset.com/money" target="_blank" rel="noopener noreferrer">Money illustrations by Storyset</a>
 </footer>
