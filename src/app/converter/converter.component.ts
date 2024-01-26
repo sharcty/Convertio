@@ -1,77 +1,108 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CurrencyService } from '../services/currency.service';
 import { SupportedCurrency } from '../interfaces/SupportedCurrencyData';
+import { finalize } from 'rxjs/operators';
+import { CurrencyCode, FormControlIds } from '../enums/enums';
 
 @Component({
   selector: 'app-converter',
   templateUrl: './converter.component.html',
-  styleUrls: ['./converter.component.css']
+  styleUrls: ['./converter.component.css'],
 })
-export class ConverterComponent {
-  currencyService: CurrencyService;
-  currencyForm: FormGroup = new FormGroup({
-    fromCurrency: new FormControl('EUR'),
-    amountFrom: new FormControl(0, [Validators.required, Validators.min(0)]),
-    toCurrency: new FormControl('USD'),
-    amountTo: new FormControl(0, [Validators.required, Validators.min(0)]),
-  });
+export class ConverterComponent implements OnInit {
+  currencyForm: FormGroup;
   supportedCodes: any;
-  isLoading: any = true;
+  isLoading: boolean = true;
 
-  constructor(currencyService: CurrencyService, private cdr: ChangeDetectorRef){
-    this.currencyService = currencyService;
+  constructor(
+    private currencyService: CurrencyService,
+    private cdr: ChangeDetectorRef,
+    private fb: FormBuilder
+  ) {
+    this.currencyForm = this.fb.group({
+      fromCurrency: [CurrencyCode.EUR],
+      amountFrom: [0, [Validators.required, Validators.min(0)]],
+      toCurrency: [CurrencyCode.USD],
+      amountTo: [0, [Validators.required, Validators.min(0)]],
+    });
   }
 
   ngOnInit(): void {
-    this.currencyService.getCurrenciesList().subscribe(
-      (response: SupportedCurrency) => {
-        if (response.result === 'success') {
-          this.supportedCodes = response.supported_codes;
-        } else {
-          console.error('Failed to fetch supported codes.');
-        }
-        this.isLoading = false;
-      },
-      error => {
-        console.error('Error fetching supported codes:', error);
-      }
-    );    
+    this.getCurrenciesList();
   }
 
-  convertCurrency() {
-   const { fromCurrency, toCurrency, amountFrom } = this.currencyForm.value;
+  getCurrenciesList() {
+    this.currencyService
+      .getCurrenciesList()
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe((response: SupportedCurrency) => {
+        this.supportedCodes = response.supported_codes;
+      });
+  }
 
-    this.currencyService.convertCurrency(fromCurrency, toCurrency, amountFrom).subscribe(
-      result => {
+  convertCurrency(event: any) {
+    if (!this.currencyForm.valid) {
+      return;
+    }
+
+    const { fromCurrency, toCurrency, amountFrom, amountTo } =
+      this.currencyForm.value;
+
+    const sourceCurrency =
+      event?.target.id === FormControlIds.AMOUNT_TO ? toCurrency : fromCurrency;
+    const targetCurrency =
+      event?.target.id === FormControlIds.AMOUNT_TO ? fromCurrency : toCurrency;
+    const sourceAmount =
+      event?.target.id === FormControlIds.AMOUNT_TO ? amountTo : amountFrom;
+
+    this.currencyService
+      .convertCurrency(sourceCurrency, targetCurrency, sourceAmount)
+      .subscribe((result) => {
         const convertedValue = result.conversion_result || 0;
 
-        if (amountFrom !== this.currencyForm.value.amountFrom) {
-          this.currencyForm.get('amountFrom')?.patchValue(convertedValue, { onlySelf: true, emitEvent: false });
+        if (event?.target.id === FormControlIds.AMOUNT_TO) {
+          this.currencyForm
+            .get(FormControlIds.AMOUNT_FROM)
+            ?.patchValue(convertedValue, { onlySelf: true, emitEvent: false });
+          this.currencyForm
+            .get(FormControlIds.AMOUNT_TO)
+            ?.patchValue(event.target.value);
+        } else if (event?.target.id === FormControlIds.AMOUNT_FROM) {
+          this.currencyForm
+            .get(FormControlIds.AMOUNT_FROM)
+            ?.patchValue(event.target.value);
+          this.currencyForm
+            .get(FormControlIds.AMOUNT_TO)
+            ?.patchValue(convertedValue, { onlySelf: true, emitEvent: false });
         } else {
-          this.currencyForm.get('amountTo')?.patchValue(convertedValue, { onlySelf: true, emitEvent: false });
+          this.currencyForm
+            .get(FormControlIds.AMOUNT_TO)
+            ?.patchValue(convertedValue, { onlySelf: true, emitEvent: false });
         }
-      }
-    );
+      });
 
     this.cdr.detectChanges();
   }
 
   setCurrencyType(event: any) {
     this.currencyForm.get(event.target.id)?.patchValue(event.target.value);
-    this.convertCurrency();
+    this.convertCurrency(event);
   }
 
   swapCurrency() {
     const { fromCurrency, toCurrency } = this.currencyForm.value;
     this.currencyForm.patchValue({
       fromCurrency: toCurrency,
-      toCurrency: fromCurrency
+      toCurrency: fromCurrency,
     });
-    this.convertCurrency();
+    this.convertCurrency(null);
   }
 
   hasError(controlName: string, errorName: string): boolean | undefined {
-    return this.currencyForm.get(controlName)?.hasError(errorName) && this.currencyForm.get(controlName)?.touched;
+    return (
+      this.currencyForm.get(controlName)?.hasError(errorName) &&
+      this.currencyForm.get(controlName)?.touched
+    );
   }
 }
