@@ -29,4 +29,15 @@ export class AppComponent {
       this.usd = result.conversion_rates ? result.conversion_rates["UAH"] : 0;
     });*/
   }
+
+  toggleMode() {
+    console.log(localStorage)
+    if(localStorage['theme'] === 'light' || (!('theme' in localStorage))){
+      document.documentElement.classList.add('dark');
+      localStorage['theme'] = 'dark'
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage['theme'] = 'light'
+    }
+  }
 }
