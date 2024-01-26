@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { ExchangeRateData } from 'src/interfaces/ExchangeRateData';
-import { PairConversion } from 'src/interfaces/PairConversionData';
-import { environment } from './../environments/environment';
+import { ExchangeRateData } from 'src/app/interfaces/ExchangeRateData';
+import { PairConversion } from 'src/app/interfaces/PairConversionData';
+import { environment } from '../../environments/environment';
+import { SupportedCurrency } from '../interfaces/SupportedCurrencyData';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,10 @@ getCurrency(currency_code: string): Observable<ExchangeRateData> {
 
 convertCurrency(base_currency_code: string, target_currency_code: string, amount: string): Observable<PairConversion> {
   return this.http.get<PairConversion>(this.currencyUrl+'pair/'+base_currency_code+'/'+target_currency_code+'/'+amount);
+}
+
+getCurrenciesList(): Observable<SupportedCurrency>{
+  return this.http.get<SupportedCurrency>(this.currencyUrl+'/codes');
 }
 //CONVERT CURRENCY
 //https://v6.exchangerate-api.com/v6/7b07ac6e0db0bd416d9a83d5/pair/EUR/GBP/AMOUNT
