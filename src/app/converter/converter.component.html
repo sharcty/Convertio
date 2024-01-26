@@ -1,46 +1,43 @@
 <div class="flex justify-center items-cente">
-<form [formGroup]="currencyForm" *ngIf="!isLoading" class="mx-auto mb-4 sm:mb-0 bg-white p-6 rounded-md shadow-md sm:mr-4">
-  <div class="flex flex-row max-md:flex-col">
+<form [formGroup]="currencyForm" *ngIf="!isLoading" class="mx-auto mb-4 sm:mb-0 dark:bg-yellow-50 dark:text-teal-700 text-yellow-50 bg-teal-700 p-6 rounded-md shadow-md sm:mr-4">
+  <div class="flex flex-col">
     <div class="flex-col">
     <div class="mb-4">
       <div class="currency-flag currency-flag-{{ this.currencyForm.value.fromCurrency.toLowerCase() }}"></div>
-      <select formControlName="fromCurrency" name="fromCurrency" id="fromCurrency" class="input-style" (input)="setCurrencyType($event)">
-        <option *ngFor="let code of supportedCodes" [value]="code[0]">
+      <select formControlName="fromCurrency" name="fromCurrency" id="fromCurrency" (input)="setCurrencyType($event)" class="bg-transparent text-lg sm:text-xl lg:text-2xl font-medium">
+        <option *ngFor="let code of supportedCodes" [value]="code[0]" class="text-teal-700">
             {{ code[0] }} - {{ code[1] }}
           </option>
       </select>
     </div>
 
     <div class="mb-4">
-      <input type="number" formControlName="amountFrom" min="0" value="0" id="amountFrom" class="input-style" (input)="convertCurrency()" required>
+      <input type="number" formControlName="amountFrom" min="0" value="0" id="amountFrom" class="w-full border-2 border-transparent transition-all duration-300 bg-transparent text-lg sm:text-xl lg:text-2xl font-medium" (input)="convertCurrency()" required>
     </div>
 </div>
 
-<button (click)="swapCurrency()" class="self-center m-4">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 hidden max-md:block">
+<button (click)="swapCurrency()" class="self-center m-4 transition ease-in-out delay-150 hover:scale-110 duration-300">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
       <path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5 7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
-    </svg>
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 max-md:hidden">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
-      </svg>      
+    </svg> 
 </button>
 
 <div class="flex-col">
     <div class="mb-4">
       <div class="currency-flag currency-flag-{{ this.currencyForm.value.toCurrency.toLowerCase() }}"></div>
-      <select name="toCurrency" formControlName="toCurrency" id="toCurrency" class="input-style" (input)="setCurrencyType($event)">
-        <option *ngFor="let code of supportedCodes" [value]="code[0]">
+      <select name="toCurrency" formControlName="toCurrency" id="toCurrency"  class="bg-transparent text-lg sm:text-xl lg:text-2xl font-medium " (input)="setCurrencyType($event)">
+        <option *ngFor="let code of supportedCodes" [value]="code[0]" class="text-teal-700">
             {{ code[0] }} - {{ code[1] }}
           </option>
       </select>
     </div>
 
     <div class="mb-4">
-      <input type="number" formControlName="amountTo" min="0" value="0" id="amountTo" class="input-style" (input)="convertCurrency()" required>
+      <input type="number" formControlName="amountTo" min="0" value="0" id="amountTo" class="border-2 border-transparent transition-all duration-300 w-full bg-transparent text-lg sm:text-xl lg:text-2xl font-medium " (input)="convertCurrency()" required>
     </div>
 </div>
 </div>
-<div class="block">
+<div class="block font-bold">
 <div *ngIf="hasError('amountTo', 'required') && hasError('amountFrom', 'required')" class="text-center text-red-500 mt-1">Amount is required.</div>
 <div *ngIf="hasError('amountTo', 'min') || hasError('amountFrom', 'min')" class="text-center text-red-500 mt-1">Amount must be greater than or equal to 0.</div>
 </div>
