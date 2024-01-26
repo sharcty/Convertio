@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
-import { ExchangeRateData } from 'src/interfaces/ExchangeRateData';
-import { PairConversion } from 'src/interfaces/PairConversionData';
-import { environment } from './../environments/environment';
+import { ExchangeRateData } from 'src/app/interfaces/ExchangeRateData';
+import { PairConversion } from 'src/app/interfaces/PairConversionData';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
