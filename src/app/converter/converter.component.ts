@@ -17,9 +17,13 @@ export class ConverterComponent {
     amountTo: new FormControl(0, [Validators.required, Validators.min(0)]),
   });
   supportedCodes: any;
+  isLoading: any = true;
 
   constructor(currencyService: CurrencyService, private cdr: ChangeDetectorRef){
     this.currencyService = currencyService;
+  }
+
+  ngOnInit(): void {
     this.currencyService.getCurrenciesList().subscribe(
       (response: SupportedCurrency) => {
         if (response.result === 'success') {
@@ -27,11 +31,12 @@ export class ConverterComponent {
         } else {
           console.error('Failed to fetch supported codes.');
         }
+        this.isLoading = false;
       },
       error => {
         console.error('Error fetching supported codes:', error);
       }
-    );
+    );    
   }
 
   convertCurrency() {
@@ -64,5 +69,9 @@ export class ConverterComponent {
       toCurrency: fromCurrency
     });
     this.convertCurrency();
+  }
+
+  hasError(controlName: string, errorName: string): boolean | undefined {
+    return this.currencyForm.get(controlName)?.hasError(errorName) && this.currencyForm.get(controlName)?.touched;
   }
 }
