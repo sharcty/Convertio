@@ -1,27 +1,20 @@
+
 # Convertio
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.12.
+Awesome currency convertor with simple ligth/dark mode design
 
-## Development server
+## Tech Stack
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+**Client:** Angular, TailwindCSS
 
-## Code scaffolding
+**API:** https://app.exchangerate-api.com/
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Demo (select is there, just not recorded, trust me)
 
-## Build
+![App Screenshot](https://drive.google.com/uc?export=view&id=1-ISfMo3nQR_bhNOXXiuDRdl7Aizbem4T)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Screenshots
 
-## Running unit tests
+![Dark mode Screenshot](https://drive.google.com/uc?export=view&id=1VRY_y7zwx5a8tXY9CoB2AZyavNde7ybw)
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+![Light mode Screenshot](https://drive.google.com/uc?export=view&id=1W_Ygsz9DwhY_TCMZIdN0vikaHN03olDU)
