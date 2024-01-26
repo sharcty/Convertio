@@ -40,7 +40,7 @@ export class ConverterComponent {
   }
 
   convertCurrency() {
-   /*const { fromCurrency, toCurrency, amountFrom } = this.currencyForm.value;
+   const { fromCurrency, toCurrency, amountFrom } = this.currencyForm.value;
 
     this.currencyService.convertCurrency(fromCurrency, toCurrency, amountFrom).subscribe(
       result => {
@@ -54,7 +54,7 @@ export class ConverterComponent {
       }
     );
 
-    this.cdr.detectChanges();*/
+    this.cdr.detectChanges();
   }
 
   setCurrencyType(event: any) {

@@ -22,11 +22,22 @@ export class AppComponent {
   }
 
   getCurrency(){
-    /*this.currencyService.getCurrency("EUR").subscribe((result: ExchangeRateData) => {
+    this.currencyService.getCurrency("EUR").subscribe((result: ExchangeRateData) => {
       this.eur = result.conversion_rates ? result.conversion_rates["UAH"] : 0;
     });
     this.currencyService.getCurrency("USD").subscribe((result: ExchangeRateData) => {
       this.usd = result.conversion_rates ? result.conversion_rates["UAH"] : 0;
-    });*/
+    });
+  }
+
+  toggleMode() {
+    console.log(localStorage)
+    if(localStorage['theme'] === 'light' || (!('theme' in localStorage))){
+      document.documentElement.classList.add('dark');
+      localStorage['theme'] = 'dark'
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage['theme'] = 'light'
+    }
   }
 }
