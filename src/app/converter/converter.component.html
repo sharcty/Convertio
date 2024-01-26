@@ -1,7 +1,8 @@
-<form [formGroup]="currencyForm" *ngIf="!isLoading" class="mx-auto mb-4 sm:mb-0 bg-white p-6 rounded-md shadow-md sm:mr-4 flex flex-row max-md:flex-col">
+<div class="flex justify-center items-cente">
+<form [formGroup]="currencyForm" *ngIf="!isLoading" class="mx-auto mb-4 sm:mb-0 bg-white p-6 rounded-md shadow-md sm:mr-4">
+  <div class="flex flex-row max-md:flex-col">
     <div class="flex-col">
     <div class="mb-4">
-      <label for="fromCurrency" class="block text-sm font-semibold mb-2">From Currency</label>
       <div class="currency-flag currency-flag-{{ this.currencyForm.value.fromCurrency.toLowerCase() }}"></div>
       <select formControlName="fromCurrency" name="fromCurrency" id="fromCurrency" class="input-style" (input)="setCurrencyType($event)">
         <option *ngFor="let code of supportedCodes" [value]="code[0]">
@@ -11,10 +12,7 @@
     </div>
 
     <div class="mb-4">
-      <label for="amountFrom" class="block text-sm font-semibold mb-2">Amount</label>
       <input type="number" formControlName="amountFrom" min="0" value="0" id="amountFrom" class="input-style" (input)="convertCurrency()" required>
-      <div *ngIf="hasError('amountFrom', 'required')" class="text-red-500 mt-1">Amount is required.</div>
-      <div *ngIf="hasError('amountFrom', 'min')" class="text-red-500 mt-1">Amount must be greater than or equal to 0.</div>
     </div>
 </div>
 
@@ -29,7 +27,6 @@
 
 <div class="flex-col">
     <div class="mb-4">
-      <label for="toCurrency" class="block text-sm font-semibold mb-2">To Currency</label>
       <div class="currency-flag currency-flag-{{ this.currencyForm.value.toCurrency.toLowerCase() }}"></div>
       <select name="toCurrency" formControlName="toCurrency" id="toCurrency" class="input-style" (input)="setCurrencyType($event)">
         <option *ngFor="let code of supportedCodes" [value]="code[0]">
@@ -39,10 +36,13 @@
     </div>
 
     <div class="mb-4">
-      <label for="amountTo" class="block text-sm font-semibold mb-2">Amount</label>
       <input type="number" formControlName="amountTo" min="0" value="0" id="amountTo" class="input-style" (input)="convertCurrency()" required>
-      <div *ngIf="hasError('amountTo', 'required')" class="text-red-500 mt-1">Amount is required.</div>
-      <div *ngIf="hasError('amountTo', 'min')" class="text-red-500 mt-1">Amount must be greater than or equal to 0.</div>
     </div>
 </div>
-  </form>
+</div>
+<div class="block">
+<div *ngIf="hasError('amountTo', 'required') && hasError('amountFrom', 'required')" class="text-center text-red-500 mt-1">Amount is required.</div>
+<div *ngIf="hasError('amountTo', 'min') || hasError('amountFrom', 'min')" class="text-center text-red-500 mt-1">Amount must be greater than or equal to 0.</div>
+</div>
+</form>
+</div>
